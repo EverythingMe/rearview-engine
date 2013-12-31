@@ -19,6 +19,13 @@ Rearview.configure do |config|
   # ex:
   # config.graphite_url="http://graphite.mycompany.com"
   config.graphite_url = nil
+  # If your graphite instance protected with basic auth, uncomment the following
+  # and change the username:
+  # config.graphite_auth = { username: 'user', password: '...' }
+  #
+  # If you want to ignore the SSL certificate of your graphite instance (not recommended,
+  # but somtimes necessary), uncomment the following:
+  # config.graphite_verify_ssl = false
 
   # This is the email from: address used when sending alerts
   # ex:
