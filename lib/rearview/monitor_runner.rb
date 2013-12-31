@@ -67,7 +67,7 @@ module Rearview
         logger.debug("#{self} fetch_data #{uri}")
 
         begin
-          response = HTTParty.get(uri)
+          response = HTTParty.get(uri, basic_auth: Rearview.config.graphite_auth, verify: Rearview.config.graphite_verify_ssl)
 
           case response.code
           when 200
