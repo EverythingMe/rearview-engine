@@ -70,6 +70,8 @@ describe Rearview::Configuration do
       expect(config.preload_jobs).to be_true
       expect(config.enable_monitor).to be_true
       expect(config.verify).to be_false
+      expect(config.graphite_verify_ssl).to be_true
+      expect(config.graphite_auth).to be_nil
     end
   end
 

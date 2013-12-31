@@ -43,13 +43,16 @@ module Rearview
       end
     end
 
-    ATTRIBUTES = [:default_from, :graphite_url, :pagerduty_url, :sandbox_exec,
+    ATTRIBUTES = [:default_from, :graphite_url, :graphite_auth, :graphite_verify_ssl,
+                  :pagerduty_url, :sandbox_exec,
                   :sandbox_timeout, :sandbox_dir, :enable_alerts, :preload_jobs,
                   :logger, :enable_monitor, :verify, :default_url_options]
 
     attr_accessor *ATTRIBUTES
 
     validates :graphite_url, presence: true, url: { reachable: true }
+    validates :graphite_auth, presence: true
+    validates :graphite_verify_ssl, presence: true
     validates :pagerduty_url, presence: true, url: true
     validates :default_from, presence: true
     validates :default_url_options, presence: true
@@ -67,6 +70,8 @@ module Rearview
       @verify = false
       @enable_monitor = true
       @pagerduty_url = "https://events.pagerduty.com/generic/2010-04-15/create_event.json"
+      @graphite_auth = nil
+      @graphite_verify_ssl = true
       super
     end
 
