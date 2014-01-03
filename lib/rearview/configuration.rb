@@ -50,7 +50,7 @@ module Rearview
 
     attr_accessor *ATTRIBUTES
 
-    validates :graphite_url, presence: true
+    validates :graphite_connection, presence: true
     validates :pagerduty_url, presence: true, url: true
     validates :default_from, presence: true
     validates :default_url_options, presence: true
