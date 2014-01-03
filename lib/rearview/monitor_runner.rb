@@ -62,12 +62,16 @@ module Rearview
         logger.debug "#{self} fetch_data"
         encMetrics = metrics.delete_if { |m| m.empty? }.map { |m| URI.escape(m) }
         from, to   = create_from_to_dates(minutes, to_date)
-        uri        = "#{Rearview.config.graphite_url}/render?from=#{from}&until=#{to}&format=raw&target=" + encMetrics.join("&target=")
+        uri        = "#{Rearview.config.graphite_connection[:url]}/render?from=#{from}&until=#{to}&format=raw&target=" + encMetrics.join("&target=")
 
         logger.debug("#{self} fetch_data #{uri}")
 
         begin
-          response = HTTParty.get(uri, basic_auth: Rearview.config.graphite_auth, verify: Rearview.config.graphite_verify_ssl)
+          options = {
+            verify: Rearview.config.graphite_connection.fetch(:verify_ssl, true),
+            basic_auth: Rearview.config.graphite_connection.fetch(:auth, nil)
+          }
+          response = HTTParty.get(uri, options)
 
           case response.code
           when 200

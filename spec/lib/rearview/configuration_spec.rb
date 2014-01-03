@@ -9,7 +9,7 @@ describe Rearview::Configuration do
   let(:config) { Rearview::Configuration.new }
 
   context 'validation' do
-    it { should validate_presence_of(:graphite_url) }
+    it { should validate_presence_of(:graphite_connection) }
     it { should validate_presence_of(:pagerduty_url) }
     it { should validate_presence_of(:default_from) }
     it { should validate_presence_of(:sandbox_dir) }
@@ -25,19 +25,6 @@ describe Rearview::Configuration do
       config.valid?
       expect(config.errors[:sandbox_dir]).to be_empty
     end
-    it "should require graphite_url to be a url" do
-      response = stub(code: 200)
-      HTTParty.stubs(:get).returns(response)
-      config.graphite_url="ssh://fooblah"
-      config.valid?
-      expect(config.errors[:graphite_url]).to include("is not a valid URL")
-      config.graphite_url="fooblah"
-      config.valid?
-      expect(config.errors[:graphite_url]).to include("is not a valid URL")
-      config.graphite_url="http://fooblah.com"
-      config.valid?
-      expect(config.errors[:graphite_url]).to be_empty
-    end
     it "should require pagerduty_url to be a url" do
       config.pagerduty_url="ftp://fooblah"
       config.valid?
@@ -45,18 +32,6 @@ describe Rearview::Configuration do
       config.pagerduty_url="HTTPS://fooblah"
       config.valid?
       expect(config.errors[:pagerduty_url]).to be_empty
-    end
-    it "should require graphite_url to be reachable" do
-      response = stub(code: 400)
-      HTTParty.expects(:get).with("http://graphite.mycompany-unreachable.com").returns(response)
-      config.graphite_url="http://graphite.mycompany-unreachable.com"
-      config.valid?
-      expect(config.errors[:graphite_url]).to include("is not a reachable URL")
-      response = stub(code: 200)
-      HTTParty.expects(:get).with("http://graphite.mycompany.com").returns(response)
-      config.graphite_url="http://graphite.mycompany.com"
-      config.valid?
-      expect(config.errors[:graphite_url]).to be_empty
     end
     pending "should require sanbox_exec to be executable"
   end
@@ -70,8 +45,6 @@ describe Rearview::Configuration do
       expect(config.preload_jobs).to be_true
       expect(config.enable_monitor).to be_true
       expect(config.verify).to be_false
-      expect(config.graphite_verify_ssl).to be_true
-      expect(config.graphite_auth).to be_nil
     end
   end
 

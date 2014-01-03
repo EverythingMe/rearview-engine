@@ -15,17 +15,10 @@ Rearview.configure do |config|
   # period the monitor script will be terminated.
   config.sandbox_timeout = 10
 
-  # The url to your graphite web server
-  # ex:
-  # config.graphite_url="http://graphite.mycompany.com"
-  config.graphite_url = nil
-  # If your graphite instance protected with basic auth, uncomment the following
-  # and change the username:
-  # config.graphite_auth = { username: 'user', password: '...' }
-  #
-  # If you want to ignore the SSL certificate of your graphite instance (not recommended,
-  # but somtimes necessary), uncomment the following:
-  # config.graphite_verify_ssl = false
+  # Graphite connection settings:
+  # verify - verify ssl (default - true)
+  # auth - basic auth credentials; leave out or set to nil, if not needed
+  config.graphite_connection = { url: "https://graphite.mycompany.com",  verify_ssl: true, auth: { username: "foo", password: "bar" } }
 
   # This is the email from: address used when sending alerts
   # ex:
